@@ -63,7 +63,7 @@ Cross-platform note: build each installer on its matching operating system for t
 
 ## Building a GitHub Release
 
-The repository includes a GitHub Actions workflow that builds Windows, macOS, and Linux release files.
+The repository includes a GitHub Actions workflow (`.github/workflows/release.yml`) that builds Windows, macOS, and Linux release files.
 
 To create a release:
 
