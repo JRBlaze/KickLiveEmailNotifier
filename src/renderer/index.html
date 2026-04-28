@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kick Live Email Alerts</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">K</div>
+          <div>
+            <h1>Kick Alerts</h1>
+            <p>Local live email notifications</p>
+          </div>
+        </div>
+
+        <nav class="tabs" aria-label="Sections">
+          <button class="tab active" data-tab="streamers">Streamers</button>
+          <button class="tab" data-tab="settings">Settings</button>
+        </nav>
+
+        <div class="status-card">
+          <div class="status-row">
+            <span>Poller</span>
+            <strong id="pollerState">Idle</strong>
+          </div>
+          <div class="status-row">
+            <span>Last check</span>
+            <strong id="lastCheck">Never</strong>
+          </div>
+          <div class="status-row">
+            <span>Storage</span>
+            <button class="link-button" id="storagePath">View path</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="panel active" id="streamersPanel">
+          <header class="panel-header">
+            <div>
+              <h2>Streamers</h2>
+              <p>Add Kick streamers and choose who should trigger email alerts.</p>
+            </div>
+            <button class="primary" id="checkNowButton">Check now</button>
+          </header>
+
+          <form class="add-row" id="addStreamerForm">
+            <input id="streamerInput" type="text" autocomplete="off" placeholder="Streamer name or kick.com URL">
+            <button type="submit">Add</button>
+          </form>
+
+          <details class="import-box">
+            <summary>Import streamers</summary>
+            <textarea id="importText" rows="5" placeholder="Paste names, Kick URLs, or a CSV-style list"></textarea>
+            <div class="actions">
+              <button id="importButton" type="button">Import list</button>
+              <button id="clearImportButton" type="button" class="secondary">Clear</button>
+            </div>
+          </details>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Streamer</th>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Last checked</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="streamerRows"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState">
+              <h3>No streamers yet</h3>
+              <p>Add a Kick username to start watching for live alerts.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="settingsPanel">
+          <header class="panel-header">
+            <div>
+              <h2>Settings</h2>
+              <p>Configure the email account used to send alerts.</p>
+            </div>
+            <button class="primary" id="saveSettingsButton">Save settings</button>
+          </header>
+
+          <form class="settings-grid" id="settingsForm">
+            <label>
+              Check every
+              <input id="pollMinutes" type="number" min="1" max="60" step="1">
+              <span class="field-hint">Minutes between live-status checks.</span>
+            </label>
+            <label class="checkbox-label">
+              <input id="launchAtLogin" type="checkbox">
+              <span>Start when I sign in</span>
+            </label>
+            <label>
+              Email provider
+              <select id="smtpPreset">
+                <option value="custom">Custom</option>
+                <option value="gmail">Gmail</option>
+                <option value="outlook">Outlook / Hotmail</option>
+                <option value="yahoo">Yahoo</option>
+              </select>
+              <span class="field-hint">Presets fill in the common SMTP server settings.</span>
+            </label>
+            <label>
+              SMTP host
+              <input id="smtpHost" type="text" placeholder="smtp.gmail.com">
+            </label>
+            <label>
+              SMTP port
+              <input id="smtpPort" type="number" min="1" max="65535">
+              <span class="field-hint">Use 587 for STARTTLS or 465 for Direct SSL.</span>
+            </label>
+            <label class="checkbox-label">
+              <input id="smtpSecure" type="checkbox">
+              <span>Direct SSL connection</span>
+            </label>
+            <label>
+              SMTP username
+              <input id="smtpUser" type="text" autocomplete="username">
+            </label>
+            <label>
+              SMTP password
+              <input id="smtpPass" type="password" autocomplete="current-password">
+            </label>
+            <label>
+              From address
+              <input id="smtpFrom" type="email" placeholder="Your Name <you@example.com>">
+            </label>
+            <label>
+              Send alerts to
+              <input id="smtpTo" type="email" placeholder="you@example.com">
+            </label>
+          </form>
+
+          <div class="actions">
+            <button id="testEmailButton" type="button">Send test email</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./renderer.js"></script>
+  </body>
+</html>
