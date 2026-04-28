@@ -65,32 +65,6 @@ Packaged files are written to `dist/`.
 
 Cross-platform note: build each installer on its matching operating system for the most reliable results. Windows EXE builds should be made on Windows, macOS DMG builds on macOS, and Linux AppImage builds on Linux.
 
-## Building a GitHub Release
-
-The repository includes a GitHub Actions workflow (`.github/workflows/release.yml`) that builds Windows, macOS, and Linux release files.
-
-To create a release:
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-GitHub Actions will build:
-
-- Windows `.exe`
-- macOS `.dmg`
-- Linux `.AppImage`
-
-When the tag starts with `v`, the workflow attaches the built files to a GitHub Release automatically.
-
-You can also run the workflow manually from GitHub:
-
-1. Open the repository on GitHub.
-2. Go to Actions.
-3. Choose Build Release.
-4. Click Run workflow.
-
 ## Mac Installation Note
 
 If you see "Kick Live Email Alerts is damaged and can't be opened" when launching on Mac, this is due to Apple's Gatekeeper blocking unsigned apps. To fix it, open Terminal and run:
