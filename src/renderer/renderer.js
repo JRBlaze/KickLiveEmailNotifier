@@ -25,6 +25,9 @@ const elements = {
   toast: document.getElementById('toast'),
   pollMinutes: document.getElementById('pollMinutes'),
   launchAtLogin: document.getElementById('launchAtLogin'),
+  minimizeToTray: document.getElementById('minimizeToTray'),
+  closeToTray: document.getElementById('closeToTray'),
+  showDockIconWhenHidden: document.getElementById('showDockIconWhenHidden'),
   smtpPreset: document.getElementById('smtpPreset'),
   smtpHost: document.getElementById('smtpHost'),
   smtpPort: document.getElementById('smtpPort'),
@@ -140,6 +143,9 @@ function renderSettings(settings) {
   const smtp = settings.smtp || {};
   elements.pollMinutes.value = settings.pollMinutes || 5;
   elements.launchAtLogin.checked = Boolean(settings.launchAtLogin);
+  elements.minimizeToTray.checked = settings.minimizeToTray !== false;
+  elements.closeToTray.checked = settings.closeToTray !== false;
+  elements.showDockIconWhenHidden.checked = Boolean(settings.showDockIconWhenHidden);
   elements.smtpPreset.value = detectSmtpPreset(smtp);
   elements.smtpHost.value = smtp.host || '';
   elements.smtpPort.value = smtp.port || 587;
@@ -217,6 +223,9 @@ function readSettingsForm() {
   return {
     pollMinutes: Number(elements.pollMinutes.value || 5),
     launchAtLogin: elements.launchAtLogin.checked,
+    minimizeToTray: elements.minimizeToTray.checked,
+    closeToTray: elements.closeToTray.checked,
+    showDockIconWhenHidden: elements.showDockIconWhenHidden.checked,
     smtp: {
       host: elements.smtpHost.value.trim(),
       port: Number(elements.smtpPort.value || 587),
