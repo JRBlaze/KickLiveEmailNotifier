@@ -31,7 +31,8 @@ A local Electron app that runs in the background and sends email when selected K
 
 3. Open Settings and configure SMTP.
 
-For Gmail, users usually need an app password rather than their normal account password.
+> [!IMPORTANT]
+> **Gmail users usually need an App Password, not their normal account password.**
 
 ## Building Installers
 
@@ -67,13 +68,18 @@ Cross-platform note: build each installer on its matching operating system for t
 
 ## Mac Installation Note
 
-If you see "Kick Live Email Alerts is damaged and can't be opened" when launching on Mac, this is due to Apple's Gatekeeper blocking unsigned apps. To fix it, open Terminal and run:
+If you see **"Kick Live Email Alerts is damaged and can't be opened"** when launching on macOS, this is usually Gatekeeper blocking an unsigned app.
+
+1. Move the app to `/Applications` first.
+2. Open Terminal and run:
 
 ```bash
-xattr -cr /Applications/Kick\ Live\ Email\ Alerts.app
+xattr -cr "/Applications/Kick Live Email Alerts.app"
 ```
 
-Then try opening the app again. Alternatively, go to System Settings -> Privacy & Security and click Open Anyway if the option appears there.
+3. Open the app again.
+
+If macOS still blocks launch, open **System Settings > Privacy & Security** and click **Open Anyway** (if shown).
 
 ## Notes
 
