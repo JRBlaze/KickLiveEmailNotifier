@@ -2,6 +2,10 @@
 
 A local Electron app that runs in the background and sends email when selected Kick streamers go live.
 
+![App Screenshot](HomeScreen.png)
+
+![App Screenshot](EmailSetup.png)
+
 ## Features
 
 - Add streamers by Kick username/slug.
