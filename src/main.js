@@ -26,13 +26,17 @@ app.on('second-instance', () => {
   showWindow();
 });
 
+app.on('activate', () => {
+  showWindow();
+});
+
 app.whenReady().then(() => {
   store = new Store(app.getPath('userData'));
   store.load();
 
   createWindow();
   createTray();
-  hideDockIcon();
+  syncDockVisibility();
   applyLaunchAtLogin();
   schedulePolling();
   pollNow('startup');
@@ -71,14 +75,25 @@ function createWindow() {
   });
 
   mainWindow.on('close', (event) => {
-    if (!app.isQuitting) {
+    const settings = store ? store.getSettings() : {};
+    if (!app.isQuitting && settings.closeToTray !== false) {
       event.preventDefault();
       mainWindow.hide();
-      hideDockIcon();
+      syncDockVisibility();
     }
   });
 
-  mainWindow.on('hide', hideDockIcon);
+  mainWindow.on('minimize', (event) => {
+    const settings = store ? store.getSettings() : {};
+    if (settings.minimizeToTray) {
+      event.preventDefault();
+      mainWindow.hide();
+      syncDockVisibility();
+    }
+  });
+
+  mainWindow.on('show', syncDockVisibility);
+  mainWindow.on('hide', syncDockVisibility);
 }
 
 function createTray() {
@@ -102,6 +117,27 @@ function updateTrayMenu() {
     { label: 'Check now', click: () => pollNow('tray') },
     { type: 'separator' },
     {
+      label: 'Minimize to tray',
+      type: 'checkbox',
+      checked: Boolean(store && store.getSettings().minimizeToTray),
+      click: (item) => updateTrayBehavior({ minimizeToTray: item.checked })
+    },
+    {
+      label: 'Close to tray',
+      type: 'checkbox',
+      checked: Boolean(store && store.getSettings().closeToTray !== false),
+      click: (item) => updateTrayBehavior({ closeToTray: item.checked })
+    },
+    ...(process.platform === 'darwin' ? [
+      {
+        label: 'Show Dock icon while in tray',
+        type: 'checkbox',
+        checked: Boolean(store && store.getSettings().showDockIconWhenHidden),
+        click: (item) => updateTrayBehavior({ showDockIconWhenHidden: item.checked })
+      },
+      { type: 'separator' }
+    ] : []),
+    {
       label: 'Quit',
       click: () => {
         app.isQuitting = true;
@@ -116,8 +152,8 @@ function showWindow() {
     return;
   }
 
-  showDockIcon();
   mainWindow.show();
+  syncDockVisibility();
   mainWindow.focus();
 }
 
@@ -131,6 +167,35 @@ function showDockIcon() {
   if (process.platform === 'darwin' && app.dock) {
     app.dock.show();
   }
+}
+
+function syncDockVisibility() {
+  if (process.platform !== 'darwin' || !app.dock) {
+    return;
+  }
+
+  const settings = store ? store.getSettings() : {};
+  if (!mainWindow || !mainWindow.isVisible()) {
+    if (settings.showDockIconWhenHidden) {
+      showDockIcon();
+    } else {
+      hideDockIcon();
+    }
+    return;
+  }
+
+  showDockIcon();
+}
+
+function updateTrayBehavior(patch) {
+  if (!store) {
+    return;
+  }
+
+  store.updateSettings(patch || {});
+  updateTrayMenu();
+  syncDockVisibility();
+  sendState();
 }
 
 function sendState() {
@@ -240,6 +305,7 @@ ipcMain.handle('settings:update', async (_event, settings) => {
   store.updateSettings(settings || {});
   applyLaunchAtLogin();
   schedulePolling();
+  syncDockVisibility();
   sendState();
   return store.snapshot();
 });

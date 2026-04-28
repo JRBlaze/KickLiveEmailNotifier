@@ -6,6 +6,9 @@ const DEFAULT_STATE = {
   settings: {
     pollMinutes: 5,
     launchAtLogin: false,
+    closeToTray: true,
+    minimizeToTray: true,
+    showDockIconWhenHidden: false,
     smtp: {
       host: '',
       port: 587,
