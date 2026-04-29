@@ -8,7 +8,7 @@ const DEFAULT_STATE = {
     launchAtLogin: false,
     closeToTray: true,
     minimizeToTray: true,
-    showDockIconWhenHidden: false,
+    showDockIconWhenHidden: true,
     smtp: {
       host: '',
       port: 587,

@@ -80,7 +80,7 @@ function createWindow() {
 
   mainWindow.on('close', (event) => {
     const settings = store ? store.getSettings() : {};
-    if (!app.isQuitting && settings.closeToTray !== false) {
+    if (!app.isQuitting && tray && settings.closeToTray !== false) {
       event.preventDefault();
       mainWindow.hide();
       syncDockVisibility();
@@ -89,7 +89,7 @@ function createWindow() {
 
   mainWindow.on('minimize', (event) => {
     const settings = store ? store.getSettings() : {};
-    if (settings.minimizeToTray) {
+    if (tray && settings.minimizeToTray) {
       event.preventDefault();
       mainWindow.hide();
       syncDockVisibility();
@@ -101,12 +101,22 @@ function createWindow() {
 }
 
 function createTray() {
-  const icon = nativeImage.createFromPath(appIconPath);
+  try {
+    let icon = nativeImage.createFromPath(appIconPath);
 
-  tray = new Tray(icon);
-  tray.setToolTip('Kick Live Email Alerts');
-  updateTrayMenu();
-  tray.on('click', showWindow);
+    if (process.platform === 'darwin') {
+      icon = icon.resize({ width: 16, height: 16 });
+    }
+
+    tray = new Tray(icon);
+    tray.setToolTip('Kick Live Email Alerts');
+    updateTrayMenu();
+    tray.on('click', showWindow);
+  } catch (_err) {
+    // System tray not available (common on Linux without libappindicator or on Wayland).
+    // The app runs normally as a regular window without tray support.
+    tray = null;
+  }
 }
 
 function updateTrayMenu() {
