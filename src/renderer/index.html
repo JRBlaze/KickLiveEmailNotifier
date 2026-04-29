@@ -92,66 +92,77 @@
           </header>
 
           <form class="settings-grid" id="settingsForm">
-            <label>
-              Check every
-              <input id="pollMinutes" type="number" min="1" max="60" step="1">
-              <span class="field-hint">Minutes between live-status checks.</span>
-            </label>
-            <label class="checkbox-label">
-              <input id="launchAtLogin" type="checkbox">
-              <span>Start when I sign in</span>
-            </label>
-            <label class="checkbox-label">
-              <input id="minimizeToTray" type="checkbox">
-              <span>Minimize to tray/menu bar</span>
-            </label>
-            <label class="checkbox-label">
-              <input id="closeToTray" type="checkbox">
-              <span>Close to tray/menu bar</span>
-            </label>
-            <label class="checkbox-label">
-              <input id="showDockIconWhenHidden" type="checkbox">
-              <span>Show Dock icon while backgrounded (macOS)</span>
-            </label>
-            <label>
-              Email provider
-              <select id="smtpPreset">
-                <option value="custom">Custom</option>
-                <option value="gmail">Gmail</option>
-                <option value="outlook">Outlook / Hotmail</option>
-                <option value="yahoo">Yahoo</option>
-              </select>
-              <span class="field-hint">Presets fill in the common SMTP server settings.</span>
-            </label>
-            <label>
-              SMTP host
-              <input id="smtpHost" type="text" placeholder="smtp.gmail.com">
-            </label>
-            <label>
-              SMTP port
-              <input id="smtpPort" type="number" min="1" max="65535">
-              <span class="field-hint">Use 587 for STARTTLS or 465 for Direct SSL.</span>
-            </label>
-            <label class="checkbox-label">
-              <input id="smtpSecure" type="checkbox">
-              <span>Direct SSL connection</span>
-            </label>
-            <label>
-              SMTP username
-              <input id="smtpUser" type="text" autocomplete="username">
-            </label>
-            <label>
-              SMTP password
-              <input id="smtpPass" type="password" autocomplete="current-password">
-            </label>
-            <label>
-              From address
-              <input id="smtpFrom" type="email" placeholder="Your Name <you@example.com>">
-            </label>
-            <label>
-              Send alerts to
-              <input id="smtpTo" type="email" placeholder="you@example.com">
-            </label>
+            <section class="settings-section">
+              <h3>App behavior</h3>
+              <div class="settings-fields">
+                <label>
+                  Check every
+                  <input id="pollMinutes" type="number" min="1" max="60" step="1">
+                  <span class="field-hint">Minutes between live-status checks.</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="launchAtLogin" type="checkbox">
+                  <span>Start when I sign in</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="minimizeToTray" type="checkbox">
+                  <span>Minimize to tray/menu bar</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="closeToTray" type="checkbox">
+                  <span>Close to tray/menu bar</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="showDockIconWhenHidden" type="checkbox">
+                  <span>Show Dock icon while backgrounded (macOS)</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="settings-section">
+              <h3>Email delivery</h3>
+              <div class="settings-fields">
+                <label>
+                  Email provider
+                  <select id="smtpPreset">
+                    <option value="custom">Custom</option>
+                    <option value="gmail">Gmail</option>
+                    <option value="outlook">Outlook / Hotmail</option>
+                    <option value="yahoo">Yahoo</option>
+                  </select>
+                  <span class="field-hint">Presets fill in the common SMTP server settings.</span>
+                </label>
+                <label>
+                  SMTP host
+                  <input id="smtpHost" type="text" placeholder="smtp.gmail.com">
+                </label>
+                <label>
+                  SMTP port
+                  <input id="smtpPort" type="number" min="1" max="65535">
+                  <span class="field-hint">Use 587 for STARTTLS or 465 for Direct SSL.</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="smtpSecure" type="checkbox">
+                  <span>Direct SSL connection</span>
+                </label>
+                <label>
+                  SMTP username
+                  <input id="smtpUser" type="text" autocomplete="username">
+                </label>
+                <label>
+                  SMTP password
+                  <input id="smtpPass" type="password" autocomplete="current-password">
+                </label>
+                <label>
+                  From address
+                  <input id="smtpFrom" type="email" placeholder="Your Name <you@example.com>">
+                </label>
+                <label>
+                  Send alerts to
+                  <input id="smtpTo" type="email" placeholder="you@example.com">
+                </label>
+              </div>
+            </section>
           </form>
 
           <div class="actions">
