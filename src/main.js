@@ -23,11 +23,11 @@ if (!gotLock) {
 }
 
 app.on('second-instance', () => {
-  showWindow();
+  showWindow({ recreateIfNeeded: true });
 });
 
 app.on('activate', () => {
-  showWindow();
+  showWindow({ recreateIfNeeded: true });
 });
 
 app.whenReady().then(() => {
@@ -72,6 +72,10 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
   mainWindow.once('ready-to-show', () => {
     showWindow();
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
   });
 
   mainWindow.on('close', (event) => {
@@ -147,8 +151,14 @@ function updateTrayMenu() {
   ]));
 }
 
-function showWindow() {
-  if (!mainWindow) {
+function showWindow(options = {}) {
+  const { recreateIfNeeded = false } = options;
+
+  if ((!mainWindow || mainWindow.isDestroyed()) && recreateIfNeeded) {
+    createWindow();
+  }
+
+  if (!mainWindow || mainWindow.isDestroyed()) {
     return;
   }
 
