@@ -2,6 +2,9 @@
 
 A local Electron app that runs in the background and sends email when selected Kick streamers go live.
 
+> [!IMPORTANT]
+> **Gmail users usually need an App Password, not their normal account password.**
+
 ![App Screenshot](HomeScreen.png)
 
 ![App Screenshot](EmailSetup.png)
@@ -30,9 +33,6 @@ A local Electron app that runs in the background and sends email when selected K
    ```
 
 3. Open Settings and configure SMTP.
-
-> [!IMPORTANT]
-> **Gmail users usually need an App Password, not their normal account password.**
 
 ## Building Installers
 
