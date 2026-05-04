@@ -8,6 +8,7 @@ let mainWindow;
 let tray;
 let store;
 let pollTimer;
+let startHidden = false;
 let isPolling = false;
 let lastPollSummary = {
   checked: 0,
@@ -33,6 +34,7 @@ app.on('activate', () => {
 app.whenReady().then(() => {
   store = new Store(app.getPath('userData'));
   store.load();
+  startHidden = shouldStartHidden();
 
   createWindow();
   createTray();
@@ -71,7 +73,11 @@ function createWindow() {
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
   mainWindow.once('ready-to-show', () => {
-    showWindow();
+    if (!startHidden) {
+      showWindow();
+    } else {
+      syncDockVisibility();
+    }
   });
 
   mainWindow.on('closed', () => {
@@ -311,8 +317,24 @@ function applyLaunchAtLogin() {
   const enabled = Boolean(store.getSettings().launchAtLogin);
   app.setLoginItemSettings({
     openAtLogin: enabled,
+    openAsHidden: enabled,
+    args: ['--hidden'],
     path: app.getPath('exe')
   });
+}
+
+function shouldStartHidden() {
+  const settings = store ? store.getSettings() : {};
+  if (!settings.launchAtLogin) {
+    return false;
+  }
+
+  if (process.argv.includes('--hidden')) {
+    return true;
+  }
+
+  const loginSettings = app.getLoginItemSettings();
+  return Boolean(loginSettings.wasOpenedAtLogin || loginSettings.openedAtLogin);
 }
 
 ipcMain.handle('state:get', () => ({
